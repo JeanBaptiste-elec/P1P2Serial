@@ -1,0 +1,13 @@
+[Unit]
+Description=P1P2toMQTT is an interface between Daikin P1P2 bus to MQTT mosquitto publisher
+After=network.target mysqld.service mosquitto.service apache2.service
+Requires=mosquitto.service
+Wants=network-online.target
+
+[Service]
+User=root
+ExecStart=/bin/sh -c '/bin/cat /dev/ttyACM0 | /usr/bin/mosquitto_pub -h localhost -t P1P2 --stdin-line'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target
